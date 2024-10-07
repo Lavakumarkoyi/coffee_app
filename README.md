@@ -1,16 +1,10 @@
-# coffee_app
+To run the app
 
-A new Flutter project.
+Flutter Clean (To clean the flutter dependencies)
+Flutter pub get (To install all the required dependencies)
+Flutter run (To run the flutter app)
 
-## Getting Started
+I havent tested it in IOS device, as I am using Window laptop and dont have access to Xcode.(sorry)
 
-This project is a starting point for a Flutter application.
+App demo recording : https://drive.google.com/file/d/1QmlwjsRpjtZV45-ITB8o-6dWfyLfvqf8/view?usp=sharing
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
