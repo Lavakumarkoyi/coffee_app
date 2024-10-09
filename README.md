@@ -13,5 +13,8 @@ App demo recording : https://drive.google.com/file/d/1QmlwjsRpjtZV45-ITB8o-6dWfy
 
 I am also refactoring the code to Clean architecture in refractor/flutter-clean-architecture branch, where I am seperating the concerns between Data, Domain, and presentation layers, Also using get_it for dependency injection for clean and robust code.
 
+![image](https://github.com/user-attachments/assets/af37a4df-98ef-49f1-883e-87cbbd37a5b5)
+
+
 
 
