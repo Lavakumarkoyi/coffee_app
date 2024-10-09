@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:coffee_app/features/card_swipe/domain/usecase/images_usecase.dart';
 import 'package:coffee_app/features/card_swipe/presentation/bloc/internet/internet_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
@@ -15,10 +16,10 @@ part 'coffee_state.dart';
 var client = http.Client();
 
 class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
-  final InternetBloc internetBloc;
-  StreamSubscription? internetSubscription;
-
-  CoffeeBloc({required this.internetBloc}) : super(CoffeeInitial()) {
+  final ImagesUsecase _coffeeImages;
+  CoffeeBloc({required ImagesUsecase coffeeImages})
+      : _coffeeImages = coffeeImages,
+        super(CoffeeInitial()) {
     on<CoffeeImagesIntialEvent>(coffeeImagesIntialEvent);
     on<FetchCoffeeImageEvent>(fetchCoffeeImage);
     on<SaveImageToCacheEvent>(saveImageToCache);
@@ -46,49 +47,27 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
 
     int Intial_card_count = 3;
 
-    // print("Images intial event");
+    final List<String> imageUrls = [];
 
-    try {
-      List<String> coffeeImages = [];
-      int i = 0;
+    for (int i = 0; i < Intial_card_count; i++) {
+      final res = await _coffeeImages(NoParams());
 
-      while (i < Intial_card_count) {
-        var response = await client.get(
-          Uri.parse('https://coffee.alexflipnote.dev/random.json'),
-        );
-        var newResponse = jsonDecode(response.body);
-
-        coffeeImages.add(newResponse['file']);
-
-        i = i + 1;
-      }
-
-      emit(IntialCoffeeImagesState(CoffeeImages: coffeeImages));
-    } catch (e) {
-      emit(IntialCoffeeImagesState(CoffeeImages: const []));
+      res.fold((left) => emit(ErrorState(left.message)), (right) => imageUrls.add(right.file));
     }
+
+    emit(IntialCoffeeImagesState(CoffeeImages: imageUrls));
   }
 
   FutureOr<void> fetchCoffeeImage(FetchCoffeeImageEvent event, Emitter emit) async {
-    print("fetch called $state");
     if (state is IntialCoffeeImagesState) {
-      print("intial coffeeImage state");
       final currentState = state as IntialCoffeeImagesState;
 
-      try {
-        var response = await client.get(
-          Uri.parse('https://coffee.alexflipnote.dev/random.json'),
-        );
-        var newResponse = jsonDecode(response.body);
+      final res = await _coffeeImages(NoParams());
 
-        final updatedCoffeeImages = List<String>.from(currentState.CoffeeImages)..add(newResponse['file']);
-
-        // updatedCoffeeImages.removeAt(0);
-
-        emit(IntialCoffeeImagesState(CoffeeImages: updatedCoffeeImages));
-      } catch (e) {
-        emit(IntialCoffeeImagesState(CoffeeImages: currentState.CoffeeImages));
-      }
+      res.fold(
+          (left) => emit(ErrorState(left.message)),
+          (right) => emit(
+              IntialCoffeeImagesState(CoffeeImages: List<String>.from(currentState.CoffeeImages)..add(right.file))));
     }
   }
 
@@ -111,8 +90,6 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
       await prefs.setString('cachedImages', jsonEncode(cachedImages));
 
       cachedImages = await fetchCachedImages();
-
-      print(cachedImages.length);
 
       emit(LikedImagesCountState(LikedImagesCount: cachedImages.length));
     }
@@ -137,10 +114,6 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
   }
 
   FutureOr<void> navigateToHomePage(NavigateToHomePageEvent event, Emitter emit) async {
-    // if ((state as IntialCoffeeImagesState).CoffeeImages.isNotEmpty) {
-    //   emit(IntialCoffeeImagesState(CoffeeImages: (state as IntialCoffeeImagesState).CoffeeImages));
-    // }
-
     emit(NavigateToHomePageState());
   }
 }
