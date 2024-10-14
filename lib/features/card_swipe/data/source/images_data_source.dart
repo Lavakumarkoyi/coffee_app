@@ -16,7 +16,7 @@ class ImagesRemoteDataSourceImpl implements ImagesRemoteDataSource {
   @override
   Future<ImageModel> fetchImagesFromAPI() async {
     try {
-      final Response response = await dioClient.get(ApiUrls.rootUrl);
+      final Response response = await dioClient.get('/random.json');
 
       if (response.statusCode == 200) {
         return ImageModel.fromMap(response.data);

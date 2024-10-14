@@ -1,3 +1,4 @@
+import 'package:coffee_app/core/constants/api_urls.dart';
 import 'package:dio/dio.dart';
 
 // import 'interceptors.dart';
@@ -7,6 +8,7 @@ class DioClient {
   DioClient()
       : _dio = Dio(
           BaseOptions(
+              baseUrl: ApiUrls.rootUrl,
               headers: {'Content-Type': 'application/json; charset=UTF-8'},
               responseType: ResponseType.json,
               sendTimeout: const Duration(seconds: 100),

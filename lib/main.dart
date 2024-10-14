@@ -13,11 +13,14 @@ import 'package:coffee_app/features/card_swipe/presentation/widgets/cancel_butto
 import 'package:coffee_app/features/card_swipe/presentation/widgets/favorite_icon.dart';
 import 'package:coffee_app/features/card_swipe/presentation/widgets/heart_button.dart';
 import 'package:coffee_app/features/card_swipe/presentation/widgets/saved_images.dart';
+import 'package:coffee_app/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/card_swipe/presentation/widgets/card_swiper.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupServiceLocator();
   runApp(const MyApp());
 }
 
@@ -37,9 +40,7 @@ class MyApp extends StatelessWidget {
           // create: (context) => CoffeeBloc(
           //   internetBloc: BlocProvider.of<InternetBloc>(context),
           // ),
-          create: (context) => CoffeeBloc(
-              coffeeImages: ImagesUsecase(
-                  CoffeeImageRepositoryImpl(imagesRemoteDataSource: ImagesRemoteDataSourceImpl(DioClient())))),
+          create: (context) => serviceLocator<CoffeeBloc>(),
         ),
         BlocProvider(
           create: (context) => ButtonBloc(),
