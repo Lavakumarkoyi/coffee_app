@@ -16,6 +16,11 @@ final class IntialCoffeeImagesState extends CoffeeState {
   IntialCoffeeImagesState({required this.CoffeeImages});
 }
 
+final class ErrorState extends CoffeeState {
+  final String message;
+  ErrorState(this.message);
+}
+
 final class SavedImagetoCache extends CoffeeState {}
 
 final class FetchImagesFromCache extends CoffeeState {

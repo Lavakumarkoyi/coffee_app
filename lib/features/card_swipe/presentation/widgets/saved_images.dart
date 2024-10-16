@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_app/features/card_swipe/presentation/bloc/coffee/coffee_bloc.dart';
+import 'package:coffee_app/features/card_swipe/presentation/pages/home.dart';
 import 'package:coffee_app/features/card_swipe/presentation/widgets/appbar.dart';
 import 'package:coffee_app/main.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class _StaggeredGridViewState extends State<StaggeredGridView> {
       listener: (context, state) {
         // print("black screen");
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MainScreen()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       },
       child: Scaffold(
