@@ -24,4 +24,14 @@ class ImageModel extends ImageEntity {
   String toJson() => json.encode(toMap());
 
   factory ImageModel.fromJson(String source) => ImageModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ImageModel && other.file == file;
+  }
+
+  @override
+  int get hashCode => file.hashCode;
 }
